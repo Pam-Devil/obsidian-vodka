@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include <stddef.h>
-#include "error.h"
+#include <error.h>
 
 typedef struct Allocator {
     size_t capacity;
@@ -14,4 +14,21 @@ typedef struct Allocator {
 
 Error allocator_init(size_t max_cap, void *buffer, Allocator *out);
 Error allocator_heap_init(size_t max_cap, Allocator *out);
-Error allocator_destroy(Allocator *allocator);
+Error allocator_heap_destroy(Allocator *allocator);
+
+/* O allocator é uma estrutura muito simples. Ele apenas faz uma coisa. Ele aloca um bloco contiguo de memoria
+de um tamanho especificado em sua capacity.
+Só. Ele apenas aloca um bloco. O que será feito com esse bloco cabe as estrategias utilizadas nele.
+
+Desta maneira se torna necessário apena ter noção de que uma alocação em memoria ocorreu, pela existencia de um allocator.
+O unico momento em que free(ptr) é evocado no codigo é nos momentos em que o allocator será liberado. 
+Isso reduz muito a carga cognitiva necessária para fazer manejo de memoria manual e diminui as chances de bugs
+como use after free ou memory leaks. Afinal desta maneira uma memory leak potencialmente seria direcionada
+a um allocator inteiro que foi esquecido de ser removido e não a uma alocação minima perdida pelo código.
+*/
+
+/*
+    The allocator owns the memory.
+    Strategies decide how that memory is used. 
+    Data structures consume the buffers provided by those strategies 
+*/
