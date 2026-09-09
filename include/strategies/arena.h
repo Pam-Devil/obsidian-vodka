@@ -1,3 +1,4 @@
+#pragma once
 #include <allocator.h>
 
 typedef struct Arena {
@@ -7,7 +8,7 @@ typedef struct Arena {
 } Arena;
 
 Error create_arena(Allocator* buff, size_t capacity, Arena* out);
-Error add_to_arena(Arena* arena, size_t item_size, void* item, void* out);
+Error add_to_arena(Arena* arena, size_t item_size, void* item, void** out);
 Error clear_arena(Arena* arena);
 
 /* A ideia da arena é ser um espaço de memoria onde varios itens são alocados de uma vez, 
@@ -20,5 +21,4 @@ Por exemplo ao abrir um arquivo, podemos alocar diversas coisas. como a string d
 allocar um objeto referente ao parsing desse arquivo e etc, porém no momento que o arquivo nao é mais
 necessario, todo ele + sua serialização devem morrer. Caso seja necessário manter a serialização mas não a string do arquivo,
 o ideal é criar uma copia da serialização em outra alocação. 
-
 */
