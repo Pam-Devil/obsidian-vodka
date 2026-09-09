@@ -17,16 +17,31 @@ It also incentivizes the avoidance of dynamic memory allocation after initializa
 * Generic and dumb memory allocator
 * Allocator strategies
 * Data structures
+* Error as value (yes it's verbose. And that is great)
 
 ## Usage
+A quick example using the allocator + arena strategy
+```c
+Allocator allocator;
+Error e = allocator_heap_init(4096, &allocator);
+//Allocating exactly 4096 bytes
+if(e != SUCCESS){/*explicitly handle the error*/}
 
-Explain how to use the project.
+Arena arena;
+e = create_arena(&allocator, allocator.capacity, &arena);    
+if(e != SUCCESS){/* explicity handle the error */}
 
-```text
-example command
+uint8_t item[256]; //allocating a 256 bytes item to the arena 
+void *item_ptr;
+e = add_to_arena(&arena, sizeof(item), item, &item_ptr);
+if(e != SUCCESS){/* explicity handle the error */}
+
+//... 
+//Suppose we dont need any of that anymore, then all we need to do is: 
+e = allocator_heap_destroy(&allocator);
+if(e != SUCCESS){/* explicity handle the error */}
+//Kill the allocator and everything is gone
 ```
-
-Add a small example when useful.
 
 ## Building
 

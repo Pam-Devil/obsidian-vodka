@@ -16,10 +16,14 @@ Error allocator_init(size_t max_cap, void *buffer, Allocator *out){
 Error allocator_heap_init(size_t max_cap, Allocator *out){
     if(out == NULL) return ERROR;
 
+    void *buffer = malloc(max_cap);
+
+    if (!c_assert(buffer != NULL)) return ERROR;
+
     *out = (Allocator){
         .capacity = max_cap,
         .heap_alloc = true,
-        .ctx = malloc(max_cap)
+        .ctx = buffer
     };
 
     return SUCCESS;

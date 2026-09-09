@@ -8,6 +8,8 @@ por exemplo retornar uma condição de erro para o chamador da função que exec
 */
 #pragma once
 
+#include <stdio.h>
+
 #define c_assert(e) ((e) ? true : ((void)fprintf(stderr, "%s:%d: assertion '%s' failed\n", __FILE__, __LINE__, #e), false))
 
 typedef enum
