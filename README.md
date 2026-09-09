@@ -8,7 +8,7 @@
 
 **Why it exists:** I used malloc once. I don't want to debug user-after-frees and keeping track of allocated pointers for the rest of my life.
 
-**What problems it solves:** It aims to reduce the cognitive load required when manually handling memory, which in turn reduces the chances of writing memory leaks or commiting user-after-free's. 
+**What problems it solves:** It aims to reduce the cognitive load required when manually handling memory, which in turn reduces the chances of writing memory leaks or commiting user-after-free bugs. 
 
 It also incentivizes the avoidance of dynamic memory allocation after initialization and also makes the decisions behind lifetimes of each allocation, being explicit and deliberate based on the strategy chosen.
 
@@ -53,7 +53,7 @@ if(e != SUCCESS){/* explicity handle the error */}
 ### example Build
 
 ```text
-python .\bin\test_arena_allocation.exe
+python .\build\build_arena_example.py
 ```
 
 ## Project Structure
@@ -75,8 +75,10 @@ project/
 - The allocator owns the memory and the allocator is the one
 responsible for releasing the memory if necessary.
 
-The ideia is that you would only ever call free(ptr) for allocators,
-which reduces drastically the number of possible memory leaks by just as many allocators you have. 
+The idea is that memory is freed at the allocator level rather than
+individually for every object allocated from it.
+This drastically reduces the number of individual allocations that
+need to be tracked and explicitly freed.
 
 It also means that you can reutilize the same allocator, just passing it to a different strategy and overwriting the memory there.
 
